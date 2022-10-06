@@ -11,8 +11,8 @@ resource "boundary_auth_method_oidc" "auth0_oidc" {
   description          = "OIDC auth method for Corp org"
   type                 = "oidc"
   issuer               = "https://dev-yozmemkp.us.auth0.com/"
-  client_id            = "R0qLbeAuQceEYcMFEhqsrsubToSDdmOJ"
-  client_secret        = "tUOvIgMNgAURV1CG0D1iDTn0C5Ch8PvHF7GZC7qw91HQJixPcQX1soKHHWevygi6"
+  client_id            = "${var.client_id}"
+  client_secret        = "${var.client_secret}"
   callback_url         = "http://${var.boundary_addr}/v1/auth-methods/oidc:authenticate:callback"
   api_url_prefix       = "http://${var.boundary_addr}"
   signing_algorithms   = ["RS256"]

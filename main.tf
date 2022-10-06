@@ -51,6 +51,8 @@ module "boundary-cluster" {
 module "boundary-resources" {
   source        = "./modules/boundary/resources"
   boundary_addr = module.boundary-cluster.boundary_addr
+  client_id     = var.client_id
+  client_secret = var.client_secret
 
   depends_on = [
     module.boundary-cluster

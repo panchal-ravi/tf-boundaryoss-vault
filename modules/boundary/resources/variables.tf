@@ -34,3 +34,11 @@ variable "target_ips" {
   type    = set(string)
   default = ["10.200.11.127"]
 }
+
+variable "client_id" {
+  type = string
+}
+
+variable "client_secret" {
+  type = string
+}

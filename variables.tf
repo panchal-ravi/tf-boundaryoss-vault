@@ -87,3 +87,11 @@ variable "vault_postgres_se_password" {
 variable "vault_token" {
   type = string
 }
+
+variable "client_id" {
+  type = string
+}
+
+variable "client_secret" {
+  type = string
+}
