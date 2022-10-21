@@ -1,7 +1,8 @@
+/*
 resource "null_resource" "boundary-token" {
-  /* triggers = {
+  triggers = {
     always_run = "${timestamp()}"
-  } */
+  }
 
   provisioner "remote-exec" {
     inline = [
@@ -22,17 +23,36 @@ resource "null_resource" "boundary-token" {
     private_key = file("${path.root}/private-key/rp-key.pem")
   }
 }
+*/
+
+resource "vault_token" "boundary" {
+  /* policies = ["boundary-controller", "db-read", "kv-read"] */
+  policies = [vault_policy.boundary-controller.name, vault_policy.db-read.name, vault_policy.kv-read.name]
+
+  no_parent = true
+  no_default_policy = true
+  renewable         = true
+  ttl               = "20m"
+
+
+  metadata = {
+    "purpose" = "boundary-service-account"
+  }
+}
+
 
 resource "boundary_credential_store_vault" "cred-store" {
   name        = "vault-cred-store"
   description = "Vault credential store!"
   address     = "http://${var.vault_ip}:8200"
-  token       = trimspace(file("${path.root}/generated_creds/boundary-token"))
+  /* token       = trimspace(file("${path.root}/generated_creds/boundary-token")) */
+  token       = vault_token.boundary.client_token
   scope_id    = var.project_core_infra_id
-
+  /* 
   depends_on = [
     null_resource.boundary-token
-  ]
+  ] 
+  */
 }
 
 resource "boundary_credential_library_vault" "vault-ssh-key" {
